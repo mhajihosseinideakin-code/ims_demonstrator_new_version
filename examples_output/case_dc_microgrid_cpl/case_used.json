@@ -1,0 +1,66 @@
+{
+  "model": "dc_microgrid_cpl",
+  "name": "My DC microgrid bus feeding a constant-power load Study",
+  "params": {},
+  "nominal_input": [
+    0.5
+  ],
+  "state_guess": [
+    0.44,
+    1.13
+  ],
+  "manifold": {
+    "sweep_param_range": [
+      0.05,
+      1.2
+    ],
+    "sweep_points": 60,
+    "keep_unstable": true
+  },
+  "disturbance": {
+    "type": "absolute",
+    "value": [
+      0.68894065,
+      0.29546767
+    ],
+    "t_horizon": 3.0
+  },
+  "recoverability": {
+    "enabled": true,
+    "radius": 0.9,
+    "n_samples": 60,
+    "t_horizon": 3.0,
+    "recovery_tol": 0.1,
+    "radius_sweep": [
+      0.2,
+      0.4,
+      0.6,
+      0.8
+    ],
+    "radius_sweep_samples": 20
+  },
+  "control": {
+    "enabled": true,
+    "Q_diag": [
+      1.0,
+      25.0
+    ],
+    "R_diag": [
+      0.5
+    ],
+    "u_min": [
+      0.05
+    ],
+    "u_max": [
+      1.5
+    ]
+  },
+  "output": {
+    "directory": "ims_output_dc_microgrid_cpl",
+    "formats": [
+      "png",
+      "md",
+      "html"
+    ]
+  }
+}

@@ -1,0 +1,50 @@
+# IMS Platform case file — Droop-controlled grid-forming inverter (single converter, swing-type dynamics)
+# States : delta (power angle, rad), omega (frequency deviation, rad/s)
+# Inputs : P_set (active-power setpoint, p.u.)
+# Editable parameters (add under `params:` to override model defaults):
+#   E: Inverter internal EMF magnitude (p.u.). Typical: 0.9-1.1
+#   V: Grid bus voltage magnitude (p.u.). Typical: 0.9-1.1
+#   X: Line reactance between inverter and grid (p.u.). Typical: 0.1-0.5
+#   tau_p: Active-power droop filter time constant (s). Typical: 0.01-0.2
+#   m_p: Droop gain (p.u. power / p.u. frequency error). Typical: 0.5-5
+
+model: grid_forming_inverter
+name: My Droop-controlled grid-forming inverter Study
+params: {}
+nominal_input:
+- 0.5
+state_guess:
+- 0.3
+- 0.0
+manifold:
+  sweep_param_range:
+  - 0.0
+  - 0.95
+  sweep_points: 60
+  keep_unstable: true
+disturbance:
+  type: offset
+  value:
+  - 1.0
+  - 2.0
+  t_horizon: 10.0
+recoverability:
+  enabled: true
+  radius: 2.0
+  n_samples: 60
+  t_horizon: 8.0
+  recovery_tol: 0.15
+  radius_sweep: [0.5, 1.0, 1.5, 2.0]
+  radius_sweep_samples: 20
+control:
+  enabled: true
+  Q_diag: [8.0, 2.0]
+  R_diag: [0.05]
+  u_min: [-0.2]
+  u_max: [1.2]
+output:
+  directory: ims_output_grid_forming_inverter
+  formats:
+  - png
+  - md
+  - html
