@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ims-platform"
+version = "0.2.0"
+description = "Modular, extensible engineering platform for nonlinear large-signal stability and recoverability analysis of converter-dominated power systems (Intrinsic Manifold Stability / Manifold-Reshaping Control)."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "IMS Platform Contributors" }]
+dependencies = [
+    "numpy>=1.23",
+    "scipy>=1.9",
+    "matplotlib>=3.5",
+    "pyyaml>=6.0",
+    "sympy>=1.12",
+    "flask>=3.0",
+    "pdfkit>=1.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0"]
+build = ["pyinstaller>=6.0"]
+
+[project.scripts]
+ims-explorer = "ims_platform.launcher:main"
+
+[tool.setuptools.packages.find]
+include = ["ims_platform*"]
+
+[tool.setuptools.package-data]
+# Previously only "server/static/*.html" -- this silently excluded the
+# logo PNGs (server/static/assets/logo/*.png, used by both the live
+# dashboard header AND embedded in every generated report) and the
+# bundled patched-Qt wkhtmltopdf binary (server/bin/wkhtmltopdf,
+# required for PDF header/footer/page-number support -- see
+# server/report_generator.py's own docstring for why the system-
+# packaged wkhtmltopdf silently drops those features) from any
+# `pip install`-built package. Found and fixed together with the
+# missing `pdfkit` dependency above, since both point at the same root
+# cause: this project's actual runtime requirements were verified only
+# against the development sandbox's pre-existing environment, not
+# against what `pyproject.toml` itself declares a fresh install gets.
+ims_platform = [
+    "server/static/*.html",
+    "server/static/assets/**/*",
+    "server/bin/*",
+]
